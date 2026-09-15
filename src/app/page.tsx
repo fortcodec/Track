@@ -1,6 +1,18 @@
+"use client";
+
 import { Sparkles, ArrowRight } from "lucide-react";
+import { useAppStore } from "@/store/useAppStore";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
+  const { messages, transcript, isListening } = useAppStore();
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, transcript]);
+
   return (
     <>
       {/* Dual Pockets Header */}
@@ -40,41 +52,55 @@ export default function Home() {
           </span>
         </div>
 
-        {/* AI Chat Bubble */}
-        <div className="flex items-start gap-3 opacity-0 animate-slide-up">
-          <div className="flex flex-col items-center gap-1">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center shadow-sm border border-white flex-shrink-0">
-              <Sparkles className="w-5 h-5 text-emerald-500" />
+        {/* Dynamic Chat Messages */}
+        {messages.map((msg, idx) => (
+          msg.sender === 'ai' ? (
+            <div key={msg.id} className="flex items-start gap-3 animate-slide-up" style={{ animationDelay: `${Math.min(idx * 150, 450)}ms` }}>
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center shadow-sm border border-white flex-shrink-0">
+                  <Sparkles className="w-5 h-5 text-emerald-500" />
+                </div>
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100/80 px-1.5 py-0.5 rounded shadow-sm">Mentor</span>
+              </div>
+              
+              <div className="bg-white px-4 py-3.5 rounded-2xl rounded-tl-sm shadow-md shadow-slate-200/40 border border-slate-100 text-slate-700 text-[15px] leading-relaxed max-w-[80%]">
+                {msg.id === '1' ? (
+                  <>Good evening! You made <span className="font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">3,000 naira</span> profit today. I moved <span className="font-semibold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">1,000 naira</span> to your Personal Money for you to spend.</>
+                ) : (
+                  msg.text
+                )}
+              </div>
             </div>
-            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100/80 px-1.5 py-0.5 rounded shadow-sm">Mentor</span>
+          ) : (
+            <div key={msg.id} className="flex items-end gap-2.5 justify-end animate-slide-up" style={{ animationDelay: `${Math.min(idx * 100, 300)}ms` }}>
+              <div className="bg-emerald-600 px-4 py-3.5 rounded-2xl rounded-tr-sm shadow-lg shadow-emerald-600/20 text-white text-[15px] leading-relaxed max-w-[80%] font-medium">
+                {msg.text}
+              </div>
+            </div>
+          )
+        ))}
+        
+        {/* Real-time transcript bubble */}
+        {isListening && transcript && (
+          <div className="flex items-end gap-2.5 justify-end animate-slide-up">
+            <div className="bg-emerald-500/80 px-4 py-3.5 rounded-2xl rounded-tr-sm shadow-lg shadow-emerald-500/20 text-white text-[15px] leading-relaxed max-w-[80%] font-medium backdrop-blur-sm">
+              <span className="opacity-90">{transcript}</span>
+            </div>
           </div>
-          
-          <div className="bg-white px-4 py-3.5 rounded-2xl rounded-tl-sm shadow-md shadow-slate-200/40 border border-slate-100 text-slate-700 text-[15px] leading-relaxed max-w-[80%]">
-            Good evening! You made <span className="font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">3,000 naira</span> profit today. I moved <span className="font-semibold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">1,000 naira</span> to your Personal Money for you to spend.
-          </div>
-        </div>
+        )}
 
-        {/* User Message Bubble */}
-        <div className="flex items-end gap-2.5 justify-end opacity-0 animate-slide-up" style={{ animationDelay: '150ms' }}>
-          <div className="bg-emerald-600 px-4 py-3.5 rounded-2xl rounded-tr-sm shadow-lg shadow-emerald-600/20 text-white text-[15px] leading-relaxed max-w-[80%] font-medium">
-            I just paid 500 for transport.
-          </div>
-        </div>
-        
-        {/* AI Typing Indicator (Optional Polish) */}
-        <div className="flex items-start gap-3 opacity-0 animate-slide-up" style={{ animationDelay: '400ms' }}>
-          <div className="flex flex-col items-center gap-1">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center shadow-sm border border-white flex-shrink-0 opacity-60">
-              <Sparkles className="w-5 h-5 text-emerald-500" />
+        {/* AI Typing Indicator (when listening but no transcript yet) */}
+        {isListening && !transcript && (
+          <div className="flex items-end gap-2.5 justify-end animate-slide-up opacity-70">
+            <div className="bg-emerald-500/50 px-4 py-4 rounded-2xl rounded-tr-sm flex gap-1 items-center h-[46px] backdrop-blur-sm">
+              <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></div>
+              <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
+              <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
             </div>
           </div>
-          <div className="bg-white px-4 py-4 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 flex gap-1 items-center h-[46px] opacity-70">
-            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
-            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
-            <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
-          </div>
-        </div>
-        
+        )}
+
+        <div ref={chatEndRef} className="h-1" />
       </div>
     </>
   );
