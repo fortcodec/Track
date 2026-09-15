@@ -2,11 +2,12 @@
 
 import { Sparkles } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const { messages, transcript, isListening } = useAppStore();
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const [user, setUser] = useState<{name: string} | null>(null);
 
   // Auto-scroll chat to bottom
   useEffect(() => {
@@ -17,7 +18,15 @@ export default function Home() {
     <>
       {/* Dual Pockets Header */}
       <div className="px-5 pt-8 pb-4 z-10 bg-slate-50 shrink-0">
-        <h1 className="text-2xl font-bold text-slate-800 mb-6 tracking-tight">Overview</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Overview</h1>
+          <button 
+            onClick={() => setUser(user ? null : { name: 'Fortune' })}
+            className="text-[11px] font-bold tracking-wider uppercase bg-slate-200 text-slate-500 px-3 py-1.5 rounded-full hover:bg-slate-300 transition-colors"
+          >
+            {user ? 'Logout' : 'Simulate Login'}
+          </button>
+        </div>
         
         <div className="flex gap-4">
           {/* Business Pocket */}
@@ -67,9 +76,9 @@ export default function Home() {
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100/80 px-1.5 py-0.5 rounded shadow-sm">Mentor</span>
               </div>
               
-              <div className="bg-white px-4 py-3.5 rounded-2xl rounded-tl-sm shadow-md shadow-slate-200/40 border border-slate-100 text-slate-700 text-[15px] leading-relaxed w-full">
+              <div className="bg-white px-4 py-3.5 rounded-2xl rounded-tl-sm shadow-md shadow-slate-200/40 border border-slate-100 text-slate-700 text-[15px] leading-relaxed w-full font-medium">
                 {msg.id === '1' ? (
-                  <>Good evening! You made <span className="font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">3,000 naira</span> profit today. I moved <span className="font-semibold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-md">1,000 naira</span> to your Personal Money for you to spend.</>
+                  user ? `Hey ${user.name}!! I'm Track.` : "Hey there!! I'm Track."
                 ) : (
                   msg.text
                 )}
