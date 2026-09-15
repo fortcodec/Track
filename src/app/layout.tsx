@@ -36,8 +36,8 @@ export default function RootLayout({
             </Link>
             
             {/* Glowing FAB */}
-            <div className="absolute left-1/2 -translate-x-1/2 -top-7">
-              <button className="bg-gradient-to-b from-emerald-400 to-teal-500 p-4 rounded-full text-white shadow-[0_8px_30px_rgba(16,185,129,0.5)] transition-all hover:scale-105 hover:shadow-[0_8px_40px_rgba(16,185,129,0.6)] active:scale-95 flex items-center justify-center border-4 border-slate-50">
+            <div className="absolute left-1/2 -translate-x-1/2 -top-7 z-50">
+              <button className="bg-gradient-to-b from-emerald-400 to-teal-500 p-4 rounded-full text-white transition-transform active:scale-95 flex items-center justify-center border-[3px] border-slate-50 animate-breathe">
                 <Mic className="w-8 h-8 drop-shadow-sm" />
               </button>
             </div>

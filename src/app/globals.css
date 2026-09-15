@@ -9,6 +9,46 @@
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 1rem);
   }
+
+  /* Hide scrollbar for native app feel */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom Animations */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.7);
+  }
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes slideUpFade {
+  0% { 
+    opacity: 0; 
+    transform: translateY(15px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 html, body {
