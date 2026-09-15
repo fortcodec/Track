@@ -18,8 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-200 h-screen flex justify-center text-slate-800 antialiased selection:bg-emerald-200`}>
-        <div className="w-full max-w-md bg-slate-50 h-full shadow-2xl relative flex flex-col overflow-hidden">
+      <body className={`${inter.className} bg-slate-200 min-h-[100dvh] flex flex-col items-center text-slate-800 antialiased selection:bg-emerald-200`}>
+        <div className="w-full max-w-md mx-auto bg-slate-50 h-[100dvh] shadow-2xl relative flex flex-col overflow-hidden">
           
           <main className="flex-1 overflow-y-auto overflow-x-hidden relative flex flex-col">
             {children}
