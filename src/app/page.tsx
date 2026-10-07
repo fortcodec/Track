@@ -3,9 +3,9 @@ import { Sparkles, ArrowRight, Mic } from 'lucide-react';
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="w-full max-w-md mx-auto min-h-screen flex flex-col px-6 relative bg-slate-50">
       {/* Header */}
-      <header className="px-6 py-5 flex items-center justify-between">
+      <header className="py-5 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shadow-md">
             <Mic className="w-4 h-4 text-white" />
@@ -21,7 +21,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 text-center -mt-10">
+      <main className="flex-1 flex flex-col items-center justify-center text-center -mt-10">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
           <Sparkles className="w-3.5 h-3.5" /> Meet your new money mentor
         </div>

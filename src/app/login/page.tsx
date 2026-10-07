@@ -17,7 +17,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 px-6">
+    <div className="w-full max-w-md mx-auto min-h-screen flex flex-col px-6 bg-slate-50 relative">
       <div className="pt-8 pb-6">
         <Link href="/" className="inline-flex p-2 -ml-2 text-slate-400 hover:text-slate-800 transition-colors rounded-full hover:bg-slate-100">
           <ChevronLeft className="w-6 h-6" />
