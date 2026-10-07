@@ -4,6 +4,7 @@ export type Message = {
   id: string;
   sender: 'ai' | 'user';
   text: string;
+  action?: 'upload_receipt';
 };
 
 interface AppState {
@@ -23,6 +24,7 @@ export const useAppStore = create<AppState>((set) => ({
       id: '1',
       sender: 'ai',
       text: 'Good evening! You made 3,000 naira profit today. I moved 1,000 naira to your Personal Money for you to spend.',
+      action: 'upload_receipt',
     }
   ],
   setIsListening: (isListening) => set({ isListening }),

@@ -1,18 +1,34 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Sparkles, Camera } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
-  const { messages, transcript, isListening } = useAppStore();
+  const { messages, transcript, isListening, addMessage } = useAppStore();
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [user, setUser] = useState<{name: string} | null>(null);
 
   // Auto-scroll chat to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, transcript]);
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      addMessage({
+        id: Date.now().toString(),
+        sender: 'ai',
+        text: "Verified! I've logged your 2,500 naira deposit. Great job keeping the streak alive!"
+      });
+      e.target.value = '';
+    }
+  };
 
   return (
     <>
@@ -82,6 +98,19 @@ export default function Home() {
                 ) : (
                   msg.text
                 )}
+
+                {/* Interactive Action Button inside AI Bubble */}
+                {msg.action === 'upload_receipt' && (
+                  <div className="mt-3">
+                    <button 
+                      onClick={handleUploadClick}
+                      className="flex items-center justify-center gap-2 w-full bg-white border border-slate-200 rounded-xl py-2 px-3 hover:bg-slate-50 transition active:scale-[0.98] shadow-sm"
+                    >
+                      <Camera className="w-4 h-4 text-slate-500" />
+                      <span className="text-sm font-bold text-slate-700">Upload Screenshot</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
@@ -112,6 +141,15 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* Hidden File Input */}
+        <input 
+          type="file" 
+          accept="image/*" 
+          ref={fileInputRef} 
+          onChange={handleFileChange}
+          className="hidden" 
+        />
 
         <div ref={chatEndRef} className="h-2" />
       </div>
